@@ -44,15 +44,10 @@
         formControlName = 'email'
         class="form-control" 
         id="exampleInputEmail1" 
-        [ngClass]="{'is-invalid':(customersForm.get('emailGroup.email').touched && customersForm.get('emailGroup.email').dirty)  && !customersForm.get('emailGroup.email').valid}" 
+        [ngClass]="{'is-invalid': emailMessage}"
         placeholder="Enter email">
       <span class="invalid-feedback">
-        <span *ngIf="customersForm.get('emailGroup.email').errors?.required">
-          Please enter your email address
-        </span>
-        <span *ngIf="customersForm.get('emailGroup.email').errors?.email">
-          Please enter a valid email address
-        </span>
+       {{emailMessage}}
       </span>
 
     </div>
@@ -78,9 +73,6 @@
       </span>
     </div>
   </div>
-<<<<<<< HEAD
-  
-=======
   <!-- phone -->
   <div class="form-group">
     <label for="phone">Phone</label>
@@ -109,6 +101,30 @@
         type="radio"
         formControlName = "sendNotification"
         id="emailnotification"
+        value="email">
+      <label class="form-check-label" for="emailnotification">
+        Email
+      </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" 
+        type="radio" 
+        formControlName = "sendNotification"
+        id="textnotification"
+        value="text">
+      <label class="form-check-label" for="textnotification">
+        Text
+      </label>
+    </div>
+    
+  
+  </div>
+  <!-- <div class="form-group">
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" 
+        type="radio"
+        formControlName = "sendNotification"
+        id="emailnotification"
         (click) = "setNotification('email')"
         value="email">
       <label class="form-check-label" for="emailnotification">
@@ -128,8 +144,7 @@
     </div>
     
   
-  </div>
->>>>>>> 7d5c5d4a7762859cbe3cfe9de8c8c049285844f0
+  </div> -->
   <!-- rating range -->
   <div class="form-group">
     <label for="rating">Ratings</label>

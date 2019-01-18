@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl, ValidatorFn } from '@angular/forms';
-import { test } from '../core/service';
+import { debounceTime } from 'rxjs/operators';
 
 function ratingRange(min, max): ValidatorFn {
   return function(c: AbstractControl): {[key: string]: boolean} | null {
@@ -31,12 +31,19 @@ function emailMatcher(c:AbstractControl):{[key:string]:boolean} | null{
 export class ReactiveformComponent implements OnInit {
   reactiveformComponentInfo:string;
   customersForm: FormGroup;
+  emailMessage : string;
+  // these following messages can be served by service 
+  private validationMessages = {
+    required: 'Please enter your email address.',
+    email: 'Please enter a valid email address. '
+  }
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.reactiveformComponentInfo = 'ngOninit of reactiveformComponentInfo';
     console.log(this.reactiveformComponentInfo);
-
+    
     // this.customersForm = new FormGroup({
     //   firstName: new FormControl('',[Validators.required,Validators.minLength(3)]),
     //   lastName: new FormControl('',),
@@ -47,12 +54,24 @@ export class ReactiveformComponent implements OnInit {
     this.customersForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(3)]],
       lastName: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
+      emailGroup:this.fb.group({
+        email: ['', [Validators.required, Validators.email]],
+        confirmEmail:['', [Validators.required, Validators.email]],
+      }),
       phone: '',
       sendNotification: 'email',
       rating: ['', ratingRange(1, 5)],
       verify: 'true'
     });
+    // observing changes for Validating Messages 
+    const emailControl = this.customersForm.get('emailGroup.email');
+    emailControl.valueChanges.pipe(debounceTime(1000)).subscribe(value => this.setMessage(emailControl))
+
+    // listening to changes in email and text radio button 
+    let sendNotificationControl = this.customersForm.get('sendNotification');
+    sendNotificationControl.valueChanges.subscribe(value =>{
+      this.setNotification(value);
+    })
   }
   save() {
     console.log(this.customersForm);
@@ -66,4 +85,13 @@ export class ReactiveformComponent implements OnInit {
     }
     phoneControl.updateValueAndValidity();
   }
+  setMessage(c:AbstractControl): void{
+    this.emailMessage = '';
+    if((c.touched || c.dirty)&& c.errors){
+      this.emailMessage = Object.keys(c.errors).map(
+        key => this.emailMessage += this.validationMessages[key]
+      )
+    }
+  }
 }
+

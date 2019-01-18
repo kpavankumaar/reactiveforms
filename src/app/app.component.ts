@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 import { NgForm } from '@angular/forms';
 
@@ -10,13 +10,23 @@ import { NgForm } from '@angular/forms';
 })
 export class AppComponent implements OnInit{
   appComponentInfo:string;
-  constructor(){
+  @ViewChild('myName') input;
+  constructor(public elm: ElementRef){
         this.appComponentInfo = 'constructor of appComponentInfo';
         console.log(this.appComponentInfo);
+        
     }
     ngOnInit(){
+        console.log(this.input.nativeElement.value);
         this.appComponentInfo = 'ngOninit of appComponentInfo';
         console.log(this.appComponentInfo);
+        var para = this.elm.nativeElement.querySelector('p')
+        console.log('para on init',para);
+    }
+    ngAfterViewInit(){
+      var para = this.elm.nativeElement.querySelector('p')
+      console.log('para after view init ',para);
+      console.log(this.input.nativeElement.value);
     }
   emailVal = '';
   firstName = '';
@@ -24,6 +34,7 @@ export class AppComponent implements OnInit{
   save(val: NgForm) {
     console.log(val);
   }
+
 
   // answersArr =['xyz', 'abc', 'def'];
   // title = 'Pavan';
