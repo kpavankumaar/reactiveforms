@@ -1,0 +1,208 @@
+<app-customercomponent></app-customercomponent>
+<form [formGroup] = 'customersForm' (ngSubmit)='save()'>
+  <div class="form-group">
+    <label for="firstname1">FirstName</label>
+    <input type="text"   
+      class="form-control" 
+      id="firstname1" 
+      formControlName = 'firstName' 
+      [ngClass]="{'is-invalid':(customersForm.controls.firstName.touched && customersForm.controls.firstName.dirty) && !customersForm.controls.firstName.valid}" 
+      placeholder="Enter FirstName">
+    <span class="invalid-feedback">
+      <span *ngIf="customersForm.controls.firstName.errors?.required">
+        please enter you firstname
+      </span>
+      <span *ngIf="customersForm.controls.firstName.errors?.minlength">
+        firstname must be more than 3 characters
+      </span>
+    </span>
+
+  </div>
+  <div class="form-group">
+    <label for="lastname1">LastName</label>
+    <input type="text" 
+     
+      class="form-control" 
+      id="lastname1" 
+      formControlName = 'lastName'
+      [ngClass]="{'is-invalid':(customersForm.get('lastName').touched && customersForm.get('lastName').dirty) && !customersForm.get('lastName').valid}" 
+      placeholder="Enter lastname">
+    <span class="invalid-feedback">
+      <span *ngIf="customersForm.get('lastName').errors?.required">
+        please enter you lastname
+      </span>
+      <span *ngIf="customersForm.get('lastName').errors?.minlength">
+        lastname must be more than 3 characters
+      </span>
+    </span>
+  </div>
+  <div formGroupName = 'emailGroup'>
+    <!-- email  -->
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" 
+        formControlName = 'email'
+        class="form-control" 
+        id="exampleInputEmail1" 
+        [ngClass]="{'is-invalid':(customersForm.get('emailGroup.email').touched && customersForm.get('emailGroup.email').dirty)  && !customersForm.get('emailGroup.email').valid}" 
+        placeholder="Enter email">
+      <span class="invalid-feedback">
+        <span *ngIf="customersForm.get('emailGroup.email').errors?.required">
+          Please enter your email address
+        </span>
+        <span *ngIf="customersForm.get('emailGroup.email').errors?.email">
+          Please enter a valid email address
+        </span>
+      </span>
+
+    </div>
+    <!-- confirmEmail -->
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" 
+        formControlName = 'confirmEmail'
+        class="form-control" 
+        id="exampleInputEmail1" 
+        [ngClass]="{'is-invalid': customersForm.get('emailGroup').errors ||
+                                  (customersForm.get('emailGroup.confirmEmail').touched && 
+                                  customersForm.get('emailGroup.confirmEmail').dirty)  && 
+                                  !customersForm.get('emailGroup.confirmEmail').valid}" 
+        placeholder="Enter confirmEmail">
+      <span class="invalid-feedback">
+        <span *ngIf="customersForm.get('emailGroup.confirmEmail').errors?.required">
+          Please enter your confirm address
+        </span>
+        <span *ngIf="customersForm.get('emailGroup').errors?.match">
+          Email address doesnot match .
+        </span>
+      </span>
+    </div>
+  </div>
+<<<<<<< HEAD
+  
+=======
+  <!-- phone -->
+  <div class="form-group">
+    <label for="phone">Phone</label>
+    <input type="number" 
+      formControlName='phone' 
+      class="form-control" 
+      id="phone" 
+      [ngClass]="{'is-invalid':(customersForm.get('phone').touched || 
+                                customersForm.get('phone').dirty)  && 
+                                !customersForm.get('phone').valid}"
+      placeholder="Phone">
+    <span class="invalid-feedback">
+      <span *ngIf="customersForm.get('phone').errors?.required">
+        Please enter your phone number
+      </span>
+      <!-- <span *ngIf="customersForm.get('phone').errors?.min">
+        Please enter a valid phone number
+      </span> -->
+    </span>
+  </div>
+
+  <!-- notification  -->
+  <div class="form-group">
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" 
+        type="radio"
+        formControlName = "sendNotification"
+        id="emailnotification"
+        (click) = "setNotification('email')"
+        value="email">
+      <label class="form-check-label" for="emailnotification">
+        Email
+      </label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" 
+        type="radio" 
+         formControlName = "sendNotification"
+        id="textnotification"
+        (click) = "setNotification('text')" 
+        value="text">
+      <label class="form-check-label" for="textnotification">
+        Text
+      </label>
+    </div>
+    
+  
+  </div>
+>>>>>>> 7d5c5d4a7762859cbe3cfe9de8c8c049285844f0
+  <!-- rating range -->
+  <div class="form-group">
+    <label for="rating">Ratings</label>
+    <input type="number" 
+      formControlName = 'rating'
+      class="form-control" 
+      id="rating" 
+      [ngClass]="{'is-invalid':(customersForm.get('rating').touched || customersForm.get('rating').dirty)  && !customersForm.get('rating').valid}" 
+      placeholder="Enter rating">
+    <span class="invalid-feedback">
+      <span *ngIf = "customersForm.get('rating').errors.range">
+         Please enter a value between 1 and 5
+      </span>
+      <!-- <span *ngIf="customersForm.get('rating').errors?.min 
+                  || customersForm.get('rating').errors?.max">
+        Please enter a value between 1 and 5
+      </span>
+       -->
+    </span>
+
+  </div>
+
+  <div class="form-group form-check">
+    <input class="form-check-input" 
+      type="checkbox" 
+      formControlName = 'verify'
+      id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <div *ngIf = 'customersForm.get("verify").value'>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="addresstype" id="home" value="option1" checked>
+        <label class="form-check-label" for="home">
+          Home
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="addresstype" id="exampleRadios2" value="option2">
+        <label class="form-check-label" for="exampleRadios2">
+         work
+        </label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="addresstype" id="exampleRadios3" value="option3" disabled>
+        <label class="form-check-label" for="exampleRadios3">
+          Disabled radio
+        </label>
+      </div>
+      
+    </div>
+    <div class="form-group">
+      <input type="text" name='street1'  class="form-control" required id="street1"
+       placeholder="Enter street1">
+    </div>
+    <div class="form-group">
+      <input type="text" name='street2' class="form-control" id="street2"
+        placeholder="Enter street2">
+    </div>
+    <div class="form-group">
+      <input type="text" name='city' class="form-control" required id="city"
+        placeholder="Enter city">
+    </div>
+    <div class="form-group">
+      <input type="text" name='state' class="form-control" required id="state"
+        placeholder="Enter state">
+    </div>
+    <div class="form-group">
+      <input type="number" name='zip' class="form-control"required  id="zip"
+        placeholder="Enter state">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary" [title]="customersForm.valid ? 'save the entered data' : 'disabled until the form data is valid'"
+    [disabled]='customersForm.invalid'>login</button>
+
+</form>
